@@ -253,14 +253,14 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
         }
 
-
+        universal=0;
         for(int j=0; j< Looping; j++) {
 
             parent = new LinearLayout(this);
             parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, (float) linearLayout_weight));
             parent.setWeightSum(120);
             parent.setOrientation(LinearLayout.HORIZONTAL);
-            parent.setPadding(30, 10, 30, 10);
+            parent.setPadding(30, 20, 30, 20);
             //parent.removeAllViews();
 
             Log.e("Size Looping", String.valueOf(Looping));
@@ -274,16 +274,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 20);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     Log.e("Name List Integer", String.valueOf(nameList_int));
                     contacts.setText(nameList.get(nameList_int));
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextSize(textSize);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     contacts.setId(nameList_int);
                     contacts.setOnClickListener(this);
                     universal++;
@@ -303,16 +302,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 24);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     Log.e("Name List Integer", String.valueOf(nameList_int));
                     contacts.setText(nameList.get(nameList_int));
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextSize(textSize);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     contacts.setId(nameList_int);
                     contacts.setOnClickListener(this);
                     universal++;
@@ -332,16 +330,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 30);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     Log.e("Name List Integer", String.valueOf(nameList_int));
                     contacts.setText(nameList.get(nameList_int));
                     contacts.setTextSize(textSize);
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     contacts.setId(nameList_int);
                     contacts.setOnClickListener(this);
                     universal++;
@@ -361,16 +358,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 40);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     Log.e("Name List Integer", String.valueOf(nameList_int));
                     contacts.setText(nameList.get(nameList_int));
                     contacts.setTextSize(textSize);
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     contacts.setId(nameList_int);
                     contacts.setOnClickListener(this);
                     universal++;
@@ -396,16 +392,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                             Button contacts = new Button(this);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 60);
-                            params.setMargins(10, 0, 10, 0);
+                            params.setMargins(15, 0, 15, 0);
                             contacts.setLayoutParams(params);
                             Log.e("Name List Integer", String.valueOf(nameList_int));
                             contacts.setText(nameList.get(nameList_int));
                             contacts.setTextSize(textSize);
                             //contacts.setTextSize((17-Looping)*4);
                             contacts.setTextColor(Color.WHITE);
-                            if(universal == 5)
-                                universal = 0;
-                            contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                             contacts.setId(nameList_int);
                             contacts.setOnClickListener(this);
                             universal++;
@@ -425,16 +420,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                             Button contacts = new Button(this);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 60);
-                            params.setMargins(10, 0, 10, 0);
+                            params.setMargins(15, 0, 15, 0);
                             contacts.setLayoutParams(params);
                             Log.e("Name List Integer", String.valueOf(nameList_int));
                             contacts.setText(nameList.get(nameList_int));
                             contacts.setTextSize(textSize);
                             //contacts.setTextSize((17-Looping)*4);
                             contacts.setTextColor(Color.WHITE);
-                            if(universal == 5)
-                                universal = 0;
-                            contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                             contacts.setId(nameList_int);
                             contacts.setOnClickListener(this);
                             universal++;
@@ -452,15 +446,14 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                         Button contacts = new Button(this);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
-                        params.setMargins(10, 0, 10, 0);
+                        params.setMargins(15, 0, 15, 0);
                         contacts.setLayoutParams(params);
                         contacts.setText(nameList.get(nameList_int));
                         contacts.setTextSize(textSize);
                         //contacts.setTextSize((17-Looping)*4);
                         contacts.setTextColor(Color.WHITE);
-                        if(universal == 5)
-                            universal = 0;
-                        contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                        contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                         universal++;
                         parent.addView(contacts);
                         nameList_int ++;
@@ -476,15 +469,14 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     contacts.setText(nameList.get(nameList_int));
                     contacts.setTextSize(textSize);
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     universal++;
                     parent.addView(contacts);
                     nameList_int ++;
@@ -499,15 +491,14 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     contacts.setText(nameList.get(nameList_int));
                     contacts.setTextSize(textSize);
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     universal++;
                     parent.addView(contacts);
                     nameList_int ++;
@@ -522,15 +513,14 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                     Button contacts = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
-                    params.setMargins(10, 0, 10, 0);
+                    params.setMargins(15, 0, 15, 0);
                     contacts.setLayoutParams(params);
                     contacts.setText(nameList.get(nameList_int));
                     contacts.setTextSize(textSize);
                     //contacts.setTextSize((17-Looping)*4);
                     contacts.setTextColor(Color.WHITE);
-                    if(universal == 5)
-                        universal = 0;
-                    contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                    contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                     universal++;
                     parent.addView(contacts);
                     nameList_int ++;
@@ -547,16 +537,15 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                         Button contacts = new Button(this);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 20);
-                        params.setMargins(10, 0, 10, 0);
+                        params.setMargins(15, 0, 15, 0);
                         contacts.setLayoutParams(params);
                         Log.e("Name List Integer", String.valueOf(nameList_int));
                         contacts.setText(nameList.get(nameList_int));
                         contacts.setTextSize(textSize);
                         //contacts.setTextSize((17-Looping)*4);
                         contacts.setTextColor(Color.WHITE);
-                        if(universal == 5)
-                            universal = 0;
-                        contacts.setBackgroundColor(Color.parseColor(ColorsArray[0]));
+
+                        contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                         contacts.setId(nameList_int);
                         contacts.setOnClickListener(this);
                         universal++;
@@ -658,9 +647,10 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 nameList.add(obj.getString("firstName"));
-                skypeIDList.add(obj.getString("skypeId"));
                 colorCode.add(obj.getString("colorCode"));
                 idArray.add(obj.getString("id"));
+                skypeIDList.add(obj.getString("skypeId"));
+                Log.e("UniversalInConvertJSON",colorCode.get(i)+" - "+universal);
 
             }
 

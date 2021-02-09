@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        if(notification && overlay){
+      //  if(notification && overlay){
 
             if(file_retreive().equals("error") == true ||file_retreive().equals("") == true || file_retreive() == null){
 
@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-        }
+       // }
 
     }
 
