@@ -110,20 +110,6 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
         }).execute();
     }
 
-    /*public void RunnableFuntion(){
-
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-
-            StartServerFile();
-            }
-        }, 5000, 10000);
-
-    }*/
-
     @SuppressLint("LongLogTag")
     public void PostExecute()
     {
@@ -708,28 +694,37 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
 
         //stopThread();
-        Log.e("Clicked", String.valueOf(v.getId()));
 
-        Intent serviceIntent = new Intent(getApplicationContext(), SkypeService.class);
-        serviceIntent.putExtra("CallerID", nameList.get(v.getId()));
-        Log.e("Service Name", nameList.get(v.getId()));
-        startService(serviceIntent);
+        if (nameList.get(v.getId()).equals("Support")) {
 
-        try {
+            Log.e("Clicked", String.valueOf(v.getId()));
+            startActivity(new Intent(getApplicationContext(), SupportActivity.class));
+
+        } else {
+
+            Log.e("Clicked", String.valueOf(v.getId()));
+
+            Intent serviceIntent = new Intent(getApplicationContext(), SkypeService.class);
+            serviceIntent.putExtra("CallerID", nameList.get(v.getId()));
+            Log.e("Service Name", nameList.get(v.getId()));
+            startService(serviceIntent);
+
+            try {
 
             /*Intent sky = new Intent("android.intent.action.VIEW");
             sky.setData(Uri.parse("skype:" + skypeIDList.get(v.getId())));
             startActivity(sky);*/
 
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("skype:"+ skypeIDList.get(v.getId())));
-            startActivity(i);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("skype:" + skypeIDList.get(v.getId())));
+                startActivity(i);
 
 
-        } catch (ActivityNotFoundException e) {
-            Log.e("SKYPE CALL", "Skype failed", e);
+            } catch (ActivityNotFoundException e) {
+                Log.e("SKYPE CALL", "Skype failed", e);
+            }
+
         }
-
     }
 
     /*@Override
