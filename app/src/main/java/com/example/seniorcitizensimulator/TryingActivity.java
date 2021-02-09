@@ -217,6 +217,8 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             Looping = 14;
 
         }*/
+        int topSpace=0;
+        int bottomSpace=0;
 
         if(nameList.size() < 11){
 
@@ -224,6 +226,8 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             linearLayout_weight = 60;
             Looping = 2;
             textSize=23;
+            topSpace= 40;
+            bottomSpace=40;
 
         }
 
@@ -233,6 +237,8 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             linearLayout_weight = 40;
             Looping = 3;
             textSize=20;
+            topSpace = 25;
+            bottomSpace =25;
 
         }
 
@@ -242,6 +248,8 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             linearLayout_weight = 30;
             Looping = 4;
             textSize=18;
+            topSpace = 20;
+            bottomSpace =20;
 
         }
 
@@ -250,6 +258,8 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             linearLayout_weight = 24;
             Looping = 5;
             textSize=15;
+            topSpace = 20;
+            bottomSpace =20;
 
         }
 
@@ -260,7 +270,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, (float) linearLayout_weight));
             parent.setWeightSum(120);
             parent.setOrientation(LinearLayout.HORIZONTAL);
-            parent.setPadding(30, 20, 30, 20);
+            parent.setPadding(30, topSpace, 30, bottomSpace);
             //parent.removeAllViews();
 
             Log.e("Size Looping", String.valueOf(Looping));
@@ -463,7 +473,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                 }
 
-                else if(button_number > 20 && button_number < 25 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
+                else if(nameList.size() > 20 && nameList.size() < 25 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
 
                     Log.e("Less than 25", String.valueOf(button_number));
 
@@ -485,7 +495,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                 }
 
-                else if(button_number > 10 && button_number < 13 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
+                else if(nameList.size() > 10 && nameList.size() < 13 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
 
                     Log.e("Less than 13", String.valueOf(button_number));
 
@@ -507,7 +517,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
                 }
 
-                else if(button_number > 15 && button_number < 18 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
+                else if(nameList.size() > 15 && nameList.size() < 18 && five_columns == 0 && four_columns ==0 && three_cloumns ==0){
 
                     Log.e("Less than 18", String.valueOf(button_number));
 
