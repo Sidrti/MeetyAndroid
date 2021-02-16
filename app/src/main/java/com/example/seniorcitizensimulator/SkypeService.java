@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -30,34 +31,33 @@ import java.util.List;
 
 public class SkypeService extends NotificationListenerService {
 
-    boolean mSkypeConnected;
-    WindowManager wm, wm_name;
-    View myView, myView_name;
+    boolean callPicked=false;
+    WindowManager wm, wm_name, wm_ringing;
+    View myView, myView_name, myView_ringing;
     Thread thread;
     int notification=0;
+    int LAYOUT_FLAG;
+    String CallerID;
 
     public SkypeService() {
 
 
     }
-
-
-
     @Override
     public void onStart(Intent intent, int startId) {
 
         Log.e("OnStart", "Service started");
 
-        String CallerID = intent.getStringExtra("CallerID");
+        CallerID = intent.getStringExtra("CallerID");
 
-        int LAYOUT_FLAG;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+         /*WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 LAYOUT_FLAG,
@@ -70,7 +70,7 @@ public class SkypeService extends NotificationListenerService {
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         myView = inflater.inflate(R.layout.overlay_layout, null);
-        ImageButton overlay = myView.findViewById(R.id.fabHead);
+        Button overlay = myView.findViewById(R.id.fabHead);
 
 
         try {
@@ -78,36 +78,11 @@ public class SkypeService extends NotificationListenerService {
             wm.addView(myView, params);
 
         }catch (Exception exception){
+            exception.getStackTrace();
+        }*/                                                                                           // End of one First Window Manager
 
 
-        }                                                                                           // End of one First Window Manager
-
-        WindowManager.LayoutParams params_name = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                PixelFormat.TRANSPARENT);
-
-        params_name.gravity = Gravity.TOP;
-        wm_name = (WindowManager) getSystemService(WINDOW_SERVICE);
-        LayoutInflater inflater_name = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        myView_name = inflater_name.inflate(R.layout.overlay_layout_for_name, null);
-        Button overlay_name = myView_name.findViewById(R.id.fabHead);
-        overlay_name.setText("Calling "+CallerID+" ....");
-
-        try {
-
-            wm_name.addView(myView_name, params_name);
-
-        }catch (Exception exception){
-
-
-        }
-
-        overlay.setOnClickListener(new View.OnClickListener() {
+        /*overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -119,6 +94,9 @@ public class SkypeService extends NotificationListenerService {
                     if (myView_name != null)
                         wm_name.removeView(myView_name);
 
+                    if(myView_ringing!=null)
+                        wm_ringing.removeView(myView_ringing);
+
                 }
                 catch (Exception Ex){}
 
@@ -129,9 +107,15 @@ public class SkypeService extends NotificationListenerService {
                 getApplicationContext().startActivity(revert);
 
             }
-        });
+        });*/
+        threadCheckUnPickedCall();
+        createRingingOverlay();
 
-        /*thread = new Thread()
+
+        super.onStart(intent, startId);
+    }
+    public void threadCheckUnPickedCall() {
+        thread = new Thread()
         {
 
             @Override
@@ -146,42 +130,88 @@ public class SkypeService extends NotificationListenerService {
                         Thread.sleep(36000);
                         killAppBypackage("com.skype.m2");
                         Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
-                        revert.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        revert.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getApplicationContext().startActivity(revert);
 
-                        try {
-
-                            if (myView != null)
-                                wm.removeView(myView);
+                        try
+                        {
+                            if (myView_ringing != null)
+                                wm_ringing.removeView(myView_ringing);
 
                             if (myView_name != null)
                                 wm_name.removeView(myView_name);
-
-
                         }
-                        catch (Exception Ex){}
-
-                        stopThread();
+                        catch (Exception e){e.printStackTrace();}
 
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         };
 
-        thread.start();*/
+        thread.start();
 
-        super.onStart(intent, startId);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
         return super.onStartCommand(intent, flags, startId);
+    }
+
+
+    public void createRingingOverlay(){
+        WindowManager.LayoutParams params_ringing = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                LAYOUT_FLAG,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                PixelFormat.TRANSPARENT);
+
+        params_ringing.gravity = Gravity.TOP;
+        wm_ringing = (WindowManager) getSystemService(WINDOW_SERVICE);
+        LayoutInflater inflater_name = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        myView_ringing = inflater_name.inflate(R.layout.overlay_ringing, null);
+        Button overlay_name = myView_ringing.findViewById(R.id.fabHead);
+        Button overlay_endcall = myView_ringing.findViewById(R.id.fabEndBtn);
+        overlay_name.setText("Calling "+CallerID+"..");
+
+        overlay_endcall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try
+                {
+                    if (myView != null)
+                        wm.removeView(myView);
+
+                    if (myView_name != null)
+                        wm_name.removeView(myView_name);
+
+                    if(myView_ringing!=null)
+                        wm_ringing.removeView(myView_ringing);
+
+                }
+                catch (Exception Ex){}
+                killAppBypackage("com.skype.raider");
+                Log.d("TAG", "touch me");
+
+                Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
+                revert.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getApplicationContext().startActivity(revert);
+                stopThread();
+            }
+        });
+
+        try {
+            wm_ringing.addView(myView_ringing, params_ringing);
+        }
+        catch (Exception exception){
+        }
+
     }
 
     @Override
@@ -189,19 +219,6 @@ public class SkypeService extends NotificationListenerService {
 
         super.onCreate();
         Log.e("Great", "Service created");
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("com.example.NOTIFICATION_LISTENER");
-        LocalBroadcastManager.getInstance(this).registerReceiver(nlServiceReceiver, filter);
-
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(this)
-                .unregisterReceiver(nlServiceReceiver);
-
 
     }
 
@@ -213,19 +230,34 @@ public class SkypeService extends NotificationListenerService {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("CALLed","Service Stopped");
+
+    }
+
+    @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
         String packageName = sbn.getPackageName();
         Log.e("TAG", "onNotificationPosted " + packageName);
 
-        stopThread();
+        //stopThread();
 
-        if(packageName != null && packageName.equals("com.skype.m2")) {
+        if(packageName != null && packageName.equals("com.skype.raider")) {
 
-            Intent intent = new Intent("com.example.NOTIFICATION_LISTENER");
-            intent.putExtra("connected", true);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            notification++;
+            try {
+
+                if (myView_ringing != null){
+                    Log.e("TAG", "Noti Ringing Posted");
+                    wm_ringing.removeView(myView_ringing);
+                    OnPickupSkype();
+                }
+
+
+            } catch (Exception Ex) {
+            }
+
 
         }
     }
@@ -238,63 +270,29 @@ public class SkypeService extends NotificationListenerService {
 
         Log.e("TAG", "onNotificationRemoved " + packageName);
 
-        if(packageName.equals("com.skype.m2")) {
+        if(packageName.equals("com.skype.raider")) {
 
-            if(notification%2 !=0) {
+            try {
+                if (myView_name != null)
+                    wm_name.removeView(myView_name);
 
-                Log.e("Notification Value", String.valueOf(notification));
+                if(myView_ringing!=null)
+                    wm_ringing.removeView(myView_ringing);
 
-                try {
-
-                    if (myView != null)
-
-                        wm.removeView(myView);
-
-                    if (myView_name != null)
-                        wm_name.removeView(myView_name);
-
-                } catch (Exception Ex) {
-                }
-
-                Intent revert = new Intent(this, LoginActivity.class);
-                revert.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(revert);
-
-                Intent intent = new Intent("com.example.NOTIFICATION_LISTENER");
-                intent.putExtra("connected", false);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            Intent revert = new Intent(this, LoginActivity.class);
+            revert.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(revert);
+            stopThread();
 
         }
 
     }
 
-
-
-    @Override
-    public StatusBarNotification[] getActiveNotifications() {
-        return super.getActiveNotifications();
-    }
-
-    BroadcastReceiver nlServiceReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent != null) {
-                boolean connected = intent.getBooleanExtra("connected", false);
-                Intent skypeIntent;
-                skypeIntent = new Intent(SyncStateContract.Constants.ACCOUNT_NAME);
-                if(connected && !mSkypeConnected) {
-                    mSkypeConnected = true;
-                    skypeIntent.putExtra("connected", true);
-                } else if(!connected) {
-                    mSkypeConnected = false;
-                    Log.d("TAG", "send broadcast disconnected");
-                    skypeIntent.putExtra("connected", false);
-                }
-                sendBroadcast(skypeIntent);
-            }
-        }
-    };
 
     private void killAppBypackage(String packageTokill){
 
@@ -311,13 +309,8 @@ public class SkypeService extends NotificationListenerService {
 
         for (ApplicationInfo packageInfo : packages) {
 
-            if((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM)==1) {
-                continue;
-            }
-            if(packageInfo.packageName.equals(myPackage)) {
-                continue;
-            }
             if(packageInfo.packageName.equals(packageTokill)) {
+                Log.e("PackageKill","Kill - "+packageTokill);
                 mActivityManager.killBackgroundProcesses(packageInfo.packageName);
             }
 
@@ -327,19 +320,67 @@ public class SkypeService extends NotificationListenerService {
 
     }
 
+    public void OnPickupSkype(){
+        stopThread();
+
+        try {
+            wm_name.removeView(myView_name);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+            WindowManager.LayoutParams params_name = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    LAYOUT_FLAG,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                            | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                    PixelFormat.TRANSPARENT);
+
+            params_name.gravity = Gravity.TOP;
+            wm_name = (WindowManager) getSystemService(WINDOW_SERVICE);
+            LayoutInflater inflater_name = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            myView_name = inflater_name.inflate(R.layout.overlay_layout_for_name, null);
+            Button overlay_name = myView_name.findViewById(R.id.fabHead);
+            Button overlay_endCall = myView_name.findViewById(R.id.fabEnd);
+            overlay_name.setText("Calling " + CallerID + " ....");
+
+            wm_name.addView(myView_name, params_name);
+
+            overlay_endCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+
+                        if (myView_name != null)
+                            wm_name.removeView(myView_name);
+
+                        if (myView_ringing != null)
+                            wm_ringing.removeView(myView_ringing);
+
+                    } catch (Exception Ex) {
+                    }
+                    killAppBypackage("com.skype.raider");
+                    Log.d("TAG", "touch me");
+
+                    Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
+                    revert.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getApplicationContext().startActivity(revert);
+
+                }
+            });
+
+
+    }
+
     public void stopThread(){
 
         try{
-
-            thread.stop();
-            thread.destroy();
             thread.interrupt();
-
         }
-        catch (Exception Ex){}
-
-        Log.e("Thread Service Stopped", "Thanks");
-
+        catch (Exception e){e.printStackTrace();}
     }
 
 }

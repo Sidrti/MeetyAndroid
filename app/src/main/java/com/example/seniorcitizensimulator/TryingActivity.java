@@ -6,18 +6,22 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,6 +34,7 @@ import android.widget.LinearLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,7 +65,6 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
 
         if(isMyServiceRunning(SkypeService.class)){
-
             Log.e("Service", "Running ---------");
             stopService(new Intent(TryingActivity.this, SkypeService.class));
         }
@@ -68,16 +72,68 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Parent_linear = findViewById(R.id.parent_linear);
+        if(isNetworkConnected()){
+            StartServerFile();
+            handler.postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    handler.postDelayed(UpdateTilesAsyn, 1000);
 
-        StartServerFile();
-
+                }
+            }, 60000);
+        }
+        else {
+            alertBox();
+        }
     }
+    private final Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg)
+        {
 
+        }
+    };
+    private Runnable UpdateTilesAsyn = new Runnable()
+    {
+        public void run()
+        {
+            StartServerFile();
+            handler.postDelayed(this, 15000); // 50 sec
+        }
+    };
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+    public void alertBox(){
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+                alertDialog.setTitle("Info");
+                alertDialog.setMessage("Internet not available, Cross check your internet connectivity and try again");
+                alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+                alertDialog.setCancelable(false);
+                alertDialog.setButton("Retry", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(TryingActivity.this,LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                alertDialog.show();
+            } catch (Exception e) {
+                Log.d("TAG", "Show Dialog: " + e.getMessage());
+            }
+        }
     public void StartServerFile()
     {
 
-        String url = "https://pula.tech/connectapi/AndroidApi/listChildUsers.php?userId=2";
+        String url = "https://meety.se/api/AndroidApi/listChildUsers.php?userId="+file_retreive();
 
         FetchFromDB asyncTask = (FetchFromDB) new FetchFromDB(url,new FetchFromDB.AsyncResponse()
         {
@@ -618,7 +674,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
         }
 
-        /*thread_Start = new Thread()
+      /*  thread_Start = new Thread()
         {
             public void run() {
 
@@ -642,7 +698,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             }
         };
 
-        thread_Start.start();*/
+        thread_Start.start(); */
 
 
     }
@@ -656,6 +712,18 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject obj = jsonArray.getJSONObject(i);
+                if(i==0 && obj.getString("isEnabled").equals("0")){
+                    if(isMyServiceRunning(SkypeService.class)){
+                        stopService(new Intent(TryingActivity.this, SkypeService.class));
+                    }
+                   // stopThread();
+                    handler.removeCallbacks(UpdateTilesAsyn);
+                    Intent supportActivityIntent = new Intent(this,SupportActivity.class);
+                    supportActivityIntent.putExtra("error","Account Deactivated");
+                    startActivity(supportActivityIntent);
+
+                    finish();
+                }
                 nameList.add(obj.getString("firstName"));
                 colorCode.add(obj.getString("colorCode"));
                 idArray.add(obj.getString("id"));
@@ -673,32 +741,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    /*public void Toolbar(){
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View ViewInflator;
-        ViewInflator = inflater.inflate(R.layout.activity_trying, null);
-
-        toolbar = ViewInflator.findViewById(R.id.toolbarId);
-        toolbar.setTitle("Meety");
-        Log.e("Got into Toolbar", "YEs");
-        toolbar.inflateMenu(R.menu.action_bar_menu);
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                if(item.getItemId()==R.id.wifi)
-                {
-                    startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
-                }
-
-                return false;
-
-            }
-        });
-
-    }*/
 
     @Override
     public void onClick(View v) {
@@ -713,7 +756,6 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
         } else {
 
             Log.e("Clicked", String.valueOf(v.getId()));
-
             Intent serviceIntent = new Intent(getApplicationContext(), SkypeService.class);
             serviceIntent.putExtra("CallerID", nameList.get(v.getId()));
             Log.e("Service Name", nameList.get(v.getId()));
@@ -721,42 +763,22 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
             try {
 
-            /*Intent sky = new Intent("android.intent.action.VIEW");
-            sky.setData(Uri.parse("skype:" + skypeIDList.get(v.getId())));
-            startActivity(sky);*/
+            Intent sky = new Intent("android.intent.action.VIEW");
+            sky.setData(Uri.parse("skype:" + skypeIDList.get(v.getId())+"?call&video=true"));
+            startActivity(sky);
 
+                /*
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("skype:" + skypeIDList.get(v.getId())));
-                startActivity(i);
+                startActivity(i); */
+
 
 
             } catch (ActivityNotFoundException e) {
                 Log.e("SKYPE CALL", "Skype failed", e);
             }
-
         }
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-
-        if(item.getItemId() == R.id.wifi){
-
-            Log.e("Yes", "Wifi has been tapped");
-
-        }
-
-        return true;
-
-    }*/
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -767,21 +789,40 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
         }
         return false;
     }
-
     public void stopThread(){
-
-        try{
-
+        try
+        {
             thread_Start.stop();
             thread_Start.destroy();
             thread_Start.interrupt();
-
         }
         catch (Exception Ex){}
 
         Log.e("Thread Stopped", "Thanks");
 
     }
+    private String file_retreive()
+    {
+        FileInputStream inputStream = null;
+        try
+        {
+            inputStream = openFileInput("UserID");
+            StringBuffer fileContent = new StringBuffer("");
 
+            byte[] buffer = new byte[1024];
+            int n;
+            while (( n = inputStream.read(buffer)) != -1)
+            {
+                fileContent.append(new String(buffer, 0, n));
+            }
 
- }
+            inputStream.close();
+            return fileContent.toString();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+}

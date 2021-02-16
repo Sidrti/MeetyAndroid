@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent success = new Intent(LoginActivity.this, TryingActivity.class);
                 success.putExtra("Login", file_retreive());
+                success.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(success);
 
                 finish();
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void StartProcessLogin(){
         //progdialog();
-        String url = "https://pula.tech/connectapi/AndroidApi/login.php?emailId="+Username.getText().toString()+"&password="+Password.getText().toString();
+        String url = "https://meety.se/api/AndroidApi/login.php?emailId="+Username.getText().toString()+"&password="+Password.getText().toString();
 
         FetchFromDB asyncTask = (FetchFromDB) new FetchFromDB(url,new FetchFromDB.AsyncResponse()
         {
@@ -161,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("JSONARRAY", jsonArray.toString());
 
                 for (int i = 0; i < jsonArray.length(); i++) {
+
                     JSONObject obj = jsonArray.getJSONObject(i);
                     file_write_url(obj.getString("id"));
                     file_write_firstname(obj.getString("firstName"));
