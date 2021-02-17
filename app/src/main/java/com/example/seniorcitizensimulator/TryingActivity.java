@@ -43,7 +43,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
     static double linearLayout_weight=0, Running_task=0;
     static String[] ColorsArray = new String []{"#0EAFFE"};
-    static int Looping, universal, nameList_int, button_number, five_columns=0, three_cloumns =0, four_columns=0;
+    static int Looping, universal, nameList_int, removelastsupport_int, button_number, five_columns=0, three_cloumns =0, four_columns=0;
     LinearLayout Parent_linear;
     androidx.appcompat.widget.Toolbar toolbar;
     final Handler ha=new Handler();
@@ -116,6 +116,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
         Parent_linear.removeAllViews();
 
+        removelastsupport_int =6;
         nameList_int =0;
         linearLayout_weight = 0;
         button_number = nameList.size();
@@ -401,7 +402,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
                         for(int i=0; i<3; i++){
 
                             Button contacts = new Button(this);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 60);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 40);
                             params.setMargins(15, 0, 15, 0);
                             contacts.setLayoutParams(params);
                             Log.e("Name List Integer", String.valueOf(nameList_int));
@@ -466,8 +467,46 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
                         contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
                         universal++;
                         parent.addView(contacts);
-                        nameList_int ++;
+                        nameList_int++;
                         button_number = button_number - 1;
+
+                        /*if (nameList.size() == 7) {
+
+                            Button contacts = new Button(this);                              //To rearrange the tiles so that support button does not occupy the last row alone
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
+                            params.setMargins(15, 0, 15, 0);
+                            contacts.setLayoutParams(params);
+                            contacts.setText(nameList.get(removelastsupport_int));
+                            contacts.setTextSize(textSize);
+                            //contacts.setTextSize((17-Looping)*4);
+                            contacts.setTextColor(Color.WHITE);
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(removelastsupport_int)));
+                            universal++;
+                            parent.addView(contacts);
+                            nameList_int ++;
+                            removelastsupport_int --;
+                            button_number = button_number - 1;
+
+                        }
+
+                        else {
+
+                            Button contacts = new Button(this);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 120);
+                            params.setMargins(15, 0, 15, 0);
+                            contacts.setLayoutParams(params);
+                            contacts.setText(nameList.get(nameList_int));
+                            contacts.setTextSize(textSize);
+                            //contacts.setTextSize((17-Looping)*4);
+                            contacts.setTextColor(Color.WHITE);
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
+                            universal++;
+                            parent.addView(contacts);
+                            nameList_int++;
+                            button_number = button_number - 1;
+                        }*/
 
                     }
 
@@ -560,8 +599,53 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
                         contacts.setOnClickListener(this);
                         universal++;
                         parent.addView(contacts);
-                        nameList_int ++;
+                        nameList_int++;
                         button_number = button_number - 1;
+
+                        /*if(nameList.size() == 7){                                                   //To rearrange the tiles so that support button does not occupy the last row alone
+
+                            Button contacts = new Button(this);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 20);
+                            params.setMargins(15, 0, 15, 0);
+                            contacts.setLayoutParams(params);
+                            Log.e("Name List Integer", String.valueOf(nameList_int));
+                            contacts.setText(nameList.get(removelastsupport_int));
+                            contacts.setTextSize(textSize);
+                            //contacts.setTextSize((17-Looping)*4);
+                            contacts.setTextColor(Color.WHITE);
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(removelastsupport_int)));
+                            contacts.setId(nameList_int);
+                            contacts.setOnClickListener(this);
+                            universal++;
+                            parent.addView(contacts);
+                            nameList_int ++;
+                            removelastsupport_int --;
+                            button_number = button_number - 1;
+
+                        }
+
+                        else {
+
+                            Button contacts = new Button(this);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 20);
+                            params.setMargins(15, 0, 15, 0);
+                            contacts.setLayoutParams(params);
+                            Log.e("Name List Integer", String.valueOf(nameList_int));
+                            contacts.setText(nameList.get(nameList_int));
+                            contacts.setTextSize(textSize);
+                            //contacts.setTextSize((17-Looping)*4);
+                            contacts.setTextColor(Color.WHITE);
+
+                            contacts.setBackgroundColor(Color.parseColor(colorCode.get(universal)));
+                            contacts.setId(nameList_int);
+                            contacts.setOnClickListener(this);
+                            universal++;
+                            parent.addView(contacts);
+                            nameList_int++;
+                            button_number = button_number - 1;
+
+                        }*/
 
                     }
 
