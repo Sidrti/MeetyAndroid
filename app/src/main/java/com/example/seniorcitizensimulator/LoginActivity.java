@@ -162,8 +162,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject obj = jsonArray.getJSONObject(i);
-                    file_write_url(obj.getString("id"));
-                    file_write_firstname(obj.getString("firstName"));
+                    file_write_url(obj.getString("ID"));
+                    //file_write_firstname(obj.getString("firstName"));
 
                     Intent main = new Intent(getApplicationContext(), TryingActivity.class);
                     main.putExtra("Login", Username.getText().toString());
