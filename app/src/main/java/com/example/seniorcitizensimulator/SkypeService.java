@@ -57,6 +57,7 @@ public class SkypeService extends NotificationListenerService {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
+
          /*WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -125,10 +126,9 @@ public class SkypeService extends NotificationListenerService {
 
                     Log.e("Thread Service Started", "Thanks");
 
-                    try {
-
+                    try
+                    {
                         Thread.sleep(36000);
-                        killAppBypackage("com.skype.m2");
                         Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
                         revert.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getApplicationContext().startActivity(revert);
@@ -147,12 +147,11 @@ public class SkypeService extends NotificationListenerService {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    KillSkypeProcess();
                 }
             }
         };
-
         thread.start();
-
     }
 
     @Override
@@ -196,7 +195,7 @@ public class SkypeService extends NotificationListenerService {
 
                 }
                 catch (Exception Ex){}
-                killAppBypackage("com.skype.raider");
+                KillSkypeProcess();
                 Log.d("TAG", "touch me");
 
                 Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
@@ -312,12 +311,31 @@ public class SkypeService extends NotificationListenerService {
             if(packageInfo.packageName.equals(packageTokill)) {
                 Log.e("PackageKill","Kill - "+packageTokill);
                 mActivityManager.killBackgroundProcesses(packageInfo.packageName);
+
             }
 
         }
 
         Log.e("Killing", "Executed");
 
+    }
+    public void KillSkypeProcess() {
+        List<ActivityManager.RunningAppProcessInfo> processes;
+        ActivityManager amg;
+        amg = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        Log.e("Proceess",amg+"-------------------");
+// list all running process
+        processes = amg.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo info : processes) {
+          Log.e("Proceess",info.processName);
+          if(info.processName.equals("com.skype.raider")){
+              // kill selected process
+               android.os.Process.killProcess(info.pid);
+               android.os.Process.sendSignal(info.pid, android.os.Process.SIGNAL_KILL);
+               amg.killBackgroundProcesses(info.processName);
+               Log.e("Proceess","Completed..");
+            }
+        }
     }
 
     public void OnPickupSkype(){
@@ -362,7 +380,7 @@ public class SkypeService extends NotificationListenerService {
 
                     } catch (Exception Ex) {
                     }
-                    killAppBypackage("com.skype.raider");
+                    KillSkypeProcess();
                     Log.d("TAG", "touch me");
 
                     Intent revert = new Intent(getApplicationContext(), LoginActivity.class);
