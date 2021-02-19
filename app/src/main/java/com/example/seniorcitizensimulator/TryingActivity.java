@@ -91,7 +91,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
             }, 60000);
         }
         else {
-            alertBox();
+            alertBox("Internet not available, Cross check your internet connectivity and try again");
         }
     }
     private final Handler handler = new Handler(){
@@ -114,12 +114,12 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
-    public void alertBox(){
+    public void alertBox(String msg){
             try {
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
                 alertDialog.setTitle("Info");
-                alertDialog.setMessage("Internet not available, Cross check your internet connectivity and try again");
+                alertDialog.setMessage(msg);
                 alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
                 alertDialog.setCancelable(false);
                 alertDialog.setButton("Retry", new DialogInterface.OnClickListener() {
@@ -198,6 +198,9 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
 
         Parent_linear.removeAllViews();
 
+        four_columns=0;
+        three_cloumns=0;
+        five_columns=0;
         nameList_int =0;
         linearLayout_weight = 0;
         button_number = nameList.size();
@@ -301,8 +304,10 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
         }*/
         int topSpace=0;
         int bottomSpace=0;
-
-        if(nameList.size() < 11){
+        if(nameList.size() == 0){
+            alertBox("No conatacts added.Contact admin to add your contacts !");
+        }
+        else if(nameList.size() < 11){
 
             Log.e("Value of looping", "2");
             linearLayout_weight = 60;
@@ -483,7 +488,7 @@ public class TryingActivity extends AppCompatActivity implements View.OnClickLis
                         for(int i=0; i<3; i++){
 
                             Button contacts = new Button(this);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 60);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 40);
                             params.setMargins(15, 0, 15, 0);
                             contacts.setLayoutParams(params);
                             Log.e("Name List Integer", String.valueOf(nameList_int));
